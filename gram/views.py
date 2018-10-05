@@ -53,3 +53,10 @@ def activate(request, uidb64, token):
 
 def hello(request):
     return render(request,'instagram/index.html')
+
+def view_profile(request,pk):
+    profile=User.objects.get(id=pk)
+    return render(request, 'instagram/profile.html', locals())
+
+def search_user(request):
+    pass
