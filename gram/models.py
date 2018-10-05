@@ -1,20 +1,20 @@
 from django.db import models
 
-class Uzer(models.Model):
-    full_name = models.CharField(max_length=50)
-    username  = models.CharField(max_length=50)
+class Posts(models.Model):
+    post_caption = models.CharField(max_length=50)
+    post_image  = models.ImageField(upload_to = 'images/')
 
-    def save_user(self):
+    def save_posts(self):
         '''
-        method to save user
+        method to save posts
         '''
         self.save()
 
-    def delete_user(self):
+    def delete_posts(self):
         '''
-        method to delete user
+        method to delete posts
         '''
         self.delete()
 
     def __str__(self):
-        return self.username()
+        return self.post_caption()

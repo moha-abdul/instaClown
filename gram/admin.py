@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Uzer
+# from .models import Uzer
 
-admin.site.register(Uzer)
+# admin.site.register(Uzer)
 # Register your models here.

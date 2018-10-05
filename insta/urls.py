@@ -8,3 +8,4 @@ urlpatterns = [
     url(r'',include('gram.urls')),
     url(r'^logout/$', views.logout, {"next_page": '/'}),
 ]
+
