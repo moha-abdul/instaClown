@@ -51,12 +51,15 @@ def activate(request, uidb64, token):
     else:
         return HttpResponse('Activation link is invalid!')
 
+
 def hello(request):
     return render(request,'instagram/index.html')
 
+@login_required
 def view_profile(request,pk):
     profile=User.objects.get(id=pk)
     return render(request, 'instagram/profile.html', locals())
 
+@login_required
 def search_user(request):
     pass
