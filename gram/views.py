@@ -2,7 +2,7 @@ from django.http import HttpResponse
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
-from .forms import SignupForm
+from .forms import SignupForm,ProfileForm
 from django.contrib.sites.shortcuts import get_current_site
 from django.utils.encoding import force_bytes, force_text
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
@@ -31,7 +31,7 @@ def signup(request):
                         mail_subject, message, to=[to_email]
             )
             email.send()
-            return HttpResponse('Please confirm your email address to complete the registration')
+            return HttpResponse('Please confirm your email to complete the registration')
     else:
         form = SignupForm()
     return render(request, 'registration/signup.html', {'form': form})
@@ -47,7 +47,7 @@ def activate(request, uidb64, token):
         user.save()
         login(request, user)
         # return redirect('home')
-        return HttpResponse('Thank you for your email confirmation. Now you can login your account.' '<a href="/accounts/login">Click here</a>')
+        return HttpResponse('Thank you. Now you can login your account.' '<a href="/accounts/login">Click here</a>')
     else:
         return HttpResponse('Activation link is invalid!')
 
@@ -59,6 +59,11 @@ def hello(request):
 def view_profile(request,pk):
     profile=User.objects.get(id=pk)
     return render(request, 'instagram/profile.html', locals())
+
+@login_required
+def edit_profile(request):
+    form = ProfileForm()
+    return render(request,'instagram/edit-profile.html',{'form': form})
 
 @login_required
 def search_user(request):
