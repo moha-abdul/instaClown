@@ -70,15 +70,15 @@ def edit_profile(request):
     profile = Profile.objects.filter(user=request.user)
     prof_form = ProfileForm()
     if request.method == 'POST':
-        prof_form =ProfileForm(request.POST,request.FILES)
+        prof_form =ProfileForm(request.POST,request.FILES,instance=request.user)
         if prof_form.is_valid:
             prof_form.save()
         else:
             prof_form = ProfileForm()
-            return render(request, 'instagram/edit-profile.html', {"prof_form": prof_form,"profile":profile})
+            # return render(request, 'instagram/edit-profile.html', {"prof_form": prof_form,"profile":profile})
     return render(request, 'instagram/edit-profile.html', {"prof_form": prof_form,"profile":profile})
 
-@login_required
+@login_required(login_url="/accounts/login/")
 def upload_image(request):
     current_user = request.user
     if request.method == 'POST':
@@ -86,7 +86,7 @@ def upload_image(request):
         if form.is_valid():
             image = form.save(commit=False)
             image.user = current_user
-            image.save()
+            form.save()
         return redirect('hello')
 
     else:

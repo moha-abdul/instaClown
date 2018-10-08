@@ -16,6 +16,15 @@ class Profile(models.Model):
     @receiver(post_save, sender=User)
     def save_user(sender, instance, **kwargs):
         instance.profile.save()
+
+    def __str__(self):
+        return self.bio
+
+    def save_image(self):
+        self.save()
+
+    def delete_image(self):
+        self.delete()
         
     
 
