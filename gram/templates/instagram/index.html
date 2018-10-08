@@ -1,13 +1,7 @@
 {% extends 'base.html'%}
 {% load staticfiles %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>InstaClown</title>
-</head>
+{% block content %}
+
 <body>
     <p>hi guys, welcome</p>
     <button><a href="{% url 'profile' pk=user.id %}">profile</a></button>
@@ -16,8 +10,6 @@
     
     <button></button>
     
-
-<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css"> {% block content %} {{ block.super }}
 <div class="container">
 
     <div class="row">
@@ -25,18 +17,14 @@
 
         <div class="thumbnail">     
             
-            <a href="/profile"> {{ up.username}}</a>
+            <a href="/profile"> {{ image.username}}</a>
 
-            <img src="{{image.image_image.url}}" alt="Image" style="height:400px; width:500px">
+            <img src="{{image.image_image.url}}" alt="Image" style="height:300px; width:300px">
 
-
-
-            <span>Posted {{up.pub_date|timesince}} ago </span>
+            <span>Posted {{image.date_uploaded|timesince}} ago </span>
             <br><br><br>
         </div>
         {% endfor %}
     </div>
 </div>
 {% endblock %}
-</body>
-</html>
