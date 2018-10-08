@@ -8,16 +8,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
 
-  {% if title%}
+  {% block title %}
 
-  <title>{{title}}</title>
+  <title>Instagram</title>
 
-  {% endif %}
 
   {% block styles %}
     {% bootstrap_css %}
     <link rel="stylesheet" href="{% static 'css/basenews.css' %}">
   {% endblock %}
+{% endblock %}
 
 </head>
 

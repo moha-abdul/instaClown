@@ -2,7 +2,7 @@ from django.http import HttpResponse
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
-from .forms import SignupForm,ProfileForm
+from .forms import SignupForm,ProfileForm, ImageForm
 from django.contrib.sites.shortcuts import get_current_site
 from django.utils.encoding import force_bytes, force_text
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
@@ -57,13 +57,36 @@ def hello(request):
 
 @login_required
 def view_profile(request,pk):
+    current_user = request.user
     profile=User.objects.get(id=pk)
     return render(request, 'instagram/profile.html', locals())
 
 @login_required
 def edit_profile(request):
-    form = ProfileForm()
+    if request.method == 'POST':
+        form = ProfileForm(request.POST)
+        if form.is_valid():
+            profile = form.save(commit=False)
+            profile.user = current_user
+            profile.save()
+    else:
+        form = ProfileForm()
     return render(request,'instagram/edit-profile.html',{'form': form})
+
+@login_required
+def upload_image(request):
+    current_user = request.user
+    if request.method == 'POST':
+        form = ImageForm(request.POST, request.FILES)
+        if form.is_valid():
+            image = form.save(commit=False)
+            image.user = current_user
+            image.save()
+        return redirect('hello')
+
+    else:
+        image_form = ImageForm()
+    return render(request, 'instagram/upload-image.html', {"image_form": image_form})
 
 @login_required
 def search_user(request):

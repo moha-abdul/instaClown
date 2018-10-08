@@ -12,7 +12,7 @@ class SignupForm(UserCreationForm):
 class ProfileForm():
     class Meta:
         model = Profile
-        exclude = ['user']
+        fields = ('profile_photo', 'profile_bio')
 
 class ImageForm(forms.ModelForm):
 	class Meta:
