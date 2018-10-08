@@ -9,7 +9,7 @@ from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.template.loader import render_to_string
 from .tokens import account_activation_token
 from django.contrib.auth.models import User
-from .models import Image
+from .models import Image, Profile
 from django.core.mail import EmailMessage
 
 def signup(request):
@@ -19,6 +19,8 @@ def signup(request):
             user = form.save(commit=False)
             user.is_active = False
             user.save()
+            # profile=Profile(user=user)
+            # profile.save()             
             current_site = get_current_site(request)
             mail_subject = 'Activate your instaClown account.'
             message = render_to_string('registration/acc_active_email.html', {
@@ -52,7 +54,7 @@ def activate(request, uidb64, token):
     else:
         return HttpResponse('Activation link is invalid!')
 
-
+@login_required
 def hello(request):
     images = Image.objects.all()
     return render(request,'instagram/index.html',{"images":images})
@@ -65,21 +67,22 @@ def view_profile(request,pk):
 
 @login_required
 def edit_profile(request):
+    profile = Profile.objects.filter(user=request.user)
+    prof_form = ProfileForm()
     if request.method == 'POST':
-        form = ProfileForm(request.POST)
-        if form.is_valid():
-            profile = form.save(commit=False)
-            profile.user = current_user
-            profile.save()
-    else:
-        form = ProfileForm()
-    return render(request,'instagram/edit-profile.html',{'form': form})
+        prof_form =ProfileForm(request.POST,request.FILES)
+        if prof_form.is_valid:
+            prof_form.save()
+        else:
+            prof_form = ProfileForm()
+            return render(request, 'instagram/edit-profile.html', {"prof_form": prof_form,"profile":profile})
+    return render(request, 'instagram/edit-profile.html', {"prof_form": prof_form,"profile":profile})
 
 @login_required
 def upload_image(request):
     current_user = request.user
     if request.method == 'POST':
-        form = ImageForm(request.POST, request.FILES)
+        form =ImageForm(request.POST,request.FILES)
         if form.is_valid():
             image = form.save(commit=False)
             image.user = current_user
