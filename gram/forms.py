@@ -17,7 +17,7 @@ class ProfileForm():
 class ImageForm(forms.ModelForm):
 	class Meta:
 		model = Image
-		exclude = ['user','time_created','time_updated','date_uploaded',]
+		exclude = ['user','time_created','time_updated','date_uploaded','profile','image_name',]
 
 class CommentForm(forms.ModelForm):
 	class Meta:

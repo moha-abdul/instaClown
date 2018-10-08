@@ -14,11 +14,10 @@ class Image(models.Model):
     image_image  = models.ImageField(upload_to = 'images/')
     image_name = models.CharField(max_length=50, null=True)
     image_caption = models.CharField(max_length=50, default="")
-    profile = models.ForeignKey(Profile)
+    profile = models.ForeignKey(Profile, null=True)
     time_created = models.DateTimeField(auto_now=True, auto_now_add=False)
     time_updated = models.DateTimeField(auto_now=False, auto_now_add=True)
     date_uploaded = models.DateTimeField(auto_now=True)
-    # likes = models.IntegerField(default=0)
     
 
     def save_image(self):
