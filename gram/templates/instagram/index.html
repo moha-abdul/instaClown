@@ -1,4 +1,5 @@
-
+{% extends 'base.html'%}
+{% load staticfiles %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -14,5 +15,28 @@
     <button><a href="{% url 'upload_image' %}">upload image</a></button>
     
     <button></button>
+    
+
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css"> {% block content %} {{ block.super }}
+<div class="container">
+
+    <div class="row">
+        {% for image in images %}
+
+        <div class="thumbnail">     
+            
+            <a href="/profile"> {{ up.username}}</a>
+
+            <img src="{{image.image_image.url}}" alt="Image" style="height:400px; width:500px">
+
+
+
+            <span>Posted {{up.pub_date|timesince}} ago </span>
+            <br><br><br>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
 </body>
 </html>

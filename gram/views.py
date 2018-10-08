@@ -9,6 +9,7 @@ from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.template.loader import render_to_string
 from .tokens import account_activation_token
 from django.contrib.auth.models import User
+from .models import Image
 from django.core.mail import EmailMessage
 
 def signup(request):
@@ -53,7 +54,8 @@ def activate(request, uidb64, token):
 
 
 def hello(request):
-    return render(request,'instagram/index.html')
+    images = Image.objects.all()
+    return render(request,'instagram/index.html',{"images":images})
 
 @login_required
 def view_profile(request,pk):
