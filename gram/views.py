@@ -59,11 +59,17 @@ def hello(request):
     images = Image.objects.all()
     return render(request,'instagram/index.html',{"images":images})
 
-@login_required
-def view_profile(request,pk):
-    current_user = request.user
-    profile=User.objects.get(id=pk)
-    return render(request, 'instagram/profile.html', locals())
+# @login_required
+# def view_profile(request,pk):
+#     current_user = request.user
+#     profile=User.objects.get(id=pk)
+#     return render(request, 'instagram/profile.html', locals())
+
+@login_required(login_url="/accounts/login/")
+def view_profile(request):
+    profile=Profile.objects.filter(user=request.user.id)
+    images=Image.objects.filter(user=request.user.id)
+    return render (request,'profile.html',{'images':images,'profile':profile})
 
 @login_required
 def edit_profile(request):
@@ -73,6 +79,7 @@ def edit_profile(request):
         prof_form =ProfileForm(request.POST,request.FILES,instance=request.user)
         if prof_form.is_valid:
             prof_form.save()
+            return redirect('view_profile/(?P<pk>\d+)')
         else:
             prof_form = ProfileForm()
             # return render(request, 'instagram/edit-profile.html', {"prof_form": prof_form,"profile":profile})
