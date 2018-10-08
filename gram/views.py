@@ -59,17 +59,18 @@ def hello(request):
     images = Image.objects.all()
     return render(request,'instagram/index.html',{"images":images})
 
-# @login_required
+@login_required
+def view_profile(request,pk):
+    current_user = request.user
+    profile=User.objects.get(id=pk)
+    return render(request, 'instagram/profile.html', {'profile':profile,})
+
+# @login_required(login_url="/accounts/login/")
 # def view_profile(request,pk):
 #     current_user = request.user
-#     profile=User.objects.get(id=pk)
-#     return render(request, 'instagram/profile.html', locals())
-
-@login_required(login_url="/accounts/login/")
-def view_profile(request):
-    profile=Profile.objects.filter(user=request.user.id)
-    images=Image.objects.filter(user=request.user.id)
-    return render (request,'profile.html',{'images':images,'profile':profile})
+    # profile=Profile.objects.filter(user=request.user.id)
+    # images=Image.objects.filter(user=request.user.id)
+    # return render (request,'profile.html',{'images':images,'profile':profile,})
 
 @login_required
 def edit_profile(request):
