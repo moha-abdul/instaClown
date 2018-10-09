@@ -5,8 +5,8 @@ from django.conf.urls.static import static
 from . import views
 
 urlpatterns=[
-    url('^$',views.hello,name = 'hello'),
-    url(r'signup', views.signup, name='signup'),
+    url('', views.signup, name='signup'),
+    url('^hello$',views.hello,name = 'hello'),
     url(r'^activate/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',
         views.activate, name='activate'),
     url(r'^view_profile/(?P<pk>\d+)',views.view_profile,name='profile'),

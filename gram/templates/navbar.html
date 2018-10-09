@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
   <style>
     .navbar {
       display: flex;
@@ -54,7 +55,7 @@
           <div></div><img class="logoname" src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Instagram_logo.svg/2000px-Instagram_logo.svg.png"/>
         </section>
         <form class="search-section">
-          <input class="input-search" type="search" name="search" placeholder="search"/>
+          <input class="input-search" role="search" action="{% url 'search_users' %}" name="search" placeholder="search"/>
         </form>
         <section class="icons-section">
           <a class="fa fa-compass" href="#"></a>

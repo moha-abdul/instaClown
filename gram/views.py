@@ -102,6 +102,27 @@ def upload_image(request):
         image_form = ImageForm()
     return render(request, 'instagram/upload-image.html', {"image_form": image_form})
 
+def new_comment(request,id):
+    upload = Image.objects.get(id=id)
+    if request.method == 'POST':
+        comment_form = CommentForm(request.POST)
+        if comment_form.is_valid():
+            comment = comment_form.save(commit=False)
+            comment.user = request.user
+            comment.image= upload
+            comment.save()
+        return redirect('/')
+
 @login_required
-def search_user(request):
-    pass
+def search_users(request):
+
+    if 'user' in request.GET and request.GET["user"]:
+        search_term = request.GET.get("user")
+        searched_users = User.search_by_user(search_term)
+        message = f"{search_term}"
+
+        return render(request, 'instagram/search.html',{"message":message,"users": searched_users})
+
+    else:
+        message = "You haven't searched for any user"
+        return render(request, 'instagram/search.html',{"message":message})
