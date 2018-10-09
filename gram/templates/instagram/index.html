@@ -4,7 +4,7 @@
 
 <body>
     <p>hi guys, welcome</p>
-    <button><a href="{% url 'profile' pk=user.id %}">profile</a></button>
+    <button><a href="{% url 'profile' %}">profile</a></button>
     <!-- <button><a href="/logout">logout</a></button> -->
     <button><a href="{% url 'upload_image' %}">upload image</a></button>
     
@@ -13,18 +13,22 @@
 <div class="container">
 
     <div class="row">
+    {% if images %}
         {% for image in images %}
 
         <div class="thumbnail">     
             
             <a href="/profile"> {{ user.username}}</a>
-
+            <span>Posted {{image.date_uploaded|timesince}} ago </span>
             <img src="{{image.image_image.url}}" alt="Image" style="height:300px; width:300px">
 
-            <span>Posted {{image.date_uploaded|timesince}} ago </span>
+            
             <br><br><br>
         </div>
         {% endfor %}
+    {% else %}
+        <p>There are no images here</p>
+    {% endif %}
     </div>
 </div>
 {% endblock %}

@@ -8,15 +8,6 @@ class Profile(models.Model):
     profile_bio = models.TextField(max_length=50)
     profile_photo  = models.ImageField(upload_to = 'profile/')
 
-    @receiver(post_save, sender=User)
-    def create_user(sender, instance, created, **kwargs):
-        if created:
-            Profile.objects.create(user=instance)
-
-    @receiver(post_save, sender=User)
-    def save_user(sender, instance, **kwargs):
-        instance.profile.save()
-
     def __str__(self):
         return self.bio
 
@@ -34,6 +25,7 @@ class Comment(models.Model):
     date_posted = models.DateTimeField(auto_now=True)
 
 class Image(models.Model):
+    user = models.ForeignKey(User, null=True)
     image_image  = models.ImageField(upload_to = 'images/')
     image_name = models.CharField(max_length=50, null=True)
     image_caption = models.CharField(max_length=50, default="")

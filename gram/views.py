@@ -1,4 +1,4 @@
-from django.http import HttpResponse
+from django.http import HttpResponse,Http404
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
@@ -19,8 +19,8 @@ def signup(request):
             user = form.save(commit=False)
             user.is_active = False
             user.save()
-            # profile=Profile(user=user)
-            # profile.save()             
+            profile=Profile(user=user)
+            profile.save()             
             current_site = get_current_site(request)
             mail_subject = 'Activate your instaClown account.'
             message = render_to_string('registration/acc_active_email.html', {
@@ -54,49 +54,64 @@ def activate(request, uidb64, token):
     else:
         return HttpResponse('Activation link is invalid!')
 
-@login_required
+# @login_required(login_url="/accounts/login/")
 def hello(request):
     images = Image.objects.all()
     return render(request,'instagram/index.html',{"images":images})
 
-@login_required
-def view_profile(request,pk):
-    current_user = request.user
-    profile=User.objects.get(id=pk)
-    images=Image.objects.filter(id=pk)
-    return render(request, 'instagram/profile.html', {'profile':profile,'images': images})
-
-# @login_required(login_url="/accounts/login/")
+# @login_required
 # def view_profile(request,pk):
 #     current_user = request.user
-    # profile=Profile.objects.filter(user=request.user.id)
-    # images=Image.objects.filter(user=request.user.id)
-    # return render (request,'profile.html',{'images':images,'profile':profile,})
+#     profile=User.objects.get(id=pk)
+#     images=Image.objects.filter(id=pk)
+#     return render(request, 'instagram/profile.html', {'profile':profile,'images': images})
 
-@login_required
 def edit_profile(request):
+    images = Image.objects.all()
     profile = Profile.objects.filter(user=request.user)
+    current_user = request.user
+    photos = Image.objects.filter(user=current_user)
     prof_form = ProfileForm()
     if request.method == 'POST':
-        prof_form =ProfileForm(request.POST,request.FILES,instance=request.user)
+        prof_form =ProfileForm(request.POST,request.FILES,instance=request.user.profile)
         if prof_form.is_valid:
             prof_form.save()
-            return redirect('view_profile/(?P<pk>\d+)')
         else:
             prof_form = ProfileForm()
-            # return render(request, 'instagram/edit-profile.html', {"prof_form": prof_form,"profile":profile})
-    return render(request, 'instagram/edit-profile.html', {"prof_form": prof_form,"profile":profile})
+            return render(request, 'instagram/edit-profile.html', {"image_form": image_form,"photos":photos,"profile":profile,"images":images})
+    return render(request, 'instagram/edit-profile.html', {"prof_form": prof_form,"photos":photos,"profile":profile,"images":images})
 
 @login_required(login_url="/accounts/login/")
+def view_profile(request):
+    current_user = request.user
+    profile=Profile.objects.filter(user=request.user)
+    images=Image.objects.filter(user=request.user)
+    return render (request,'instagram/profile.html',{'images':images,'profile':profile,})
+
+# @login_required
+# def edit_profile(request):
+#     profile = Profile.objects.filter(user=request.user)
+#     prof_form = ProfileForm()
+#     if request.method == 'POST':
+#         prof_form =ProfileForm(request.POST,request.FILES,instance=request.user)
+#         if prof_form.is_valid:
+#             prof_form.save()
+#             return redirect('view_profile/(?P<pk>\d+)')
+#         else:
+#             prof_form = ProfileForm()
+#             # return render(request, 'instagram/edit-profile.html', {"prof_form": prof_form,"profile":profile})
+#     return render(request, 'instagram/edit-profile.html', {"prof_form": prof_form,"profile":profile})
+
+# @login_required(login_url="/accounts/login/")
 def upload_image(request):
     current_user = request.user
     if request.method == 'POST':
-        form =ImageForm(request.POST,request.FILES)
-        if form.is_valid():
-            image = form.save(commit=False)
+        image_form =ImageForm(request.POST,request.FILES)
+        if image_form.is_valid():
+            image = image_form.save(commit=False)
             image.user = current_user
-            form.save()
-        return redirect('hello')
+            image.save()
+        return render(request, 'instagram/upload-image.html', {"image_form": image_form})
 
     else:
         image_form = ImageForm()
@@ -114,7 +129,14 @@ def new_comment(request,id):
         return redirect('/')
 
 @login_required
-def search_users(request):
+def other_profile(request,pk):
+    current_user = request.user
+    profile=User.objects.get(id=pk)
+    images=Image.objects.filter(id=pk)
+    return render(request, 'instagram/profile.html', {'profile':profile,'images': images})
+
+@login_required
+def search_user(request):
 
     if 'user' in request.GET and request.GET["user"]:
         search_term = request.GET.get("user")
