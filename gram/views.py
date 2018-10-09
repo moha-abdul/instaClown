@@ -63,7 +63,8 @@ def hello(request):
 def view_profile(request,pk):
     current_user = request.user
     profile=User.objects.get(id=pk)
-    return render(request, 'instagram/profile.html', {'profile':profile,})
+    images=Image.objects.filter(id=pk)
+    return render(request, 'instagram/profile.html', {'profile':profile,'images': images})
 
 # @login_required(login_url="/accounts/login/")
 # def view_profile(request,pk):
