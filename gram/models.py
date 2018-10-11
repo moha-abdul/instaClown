@@ -19,11 +19,6 @@ class Profile(models.Model):
         
     
 
-class Comment(models.Model):
-    # user = models.ForeignKey(User, null=True, blank=True, on_delete=models.CASCADE,related_name='user')
-    comment = models.TextField()
-    date_posted = models.DateTimeField(auto_now=True)
-
 class Image(models.Model):
     user = models.ForeignKey(User, null=True)
     image_image  = models.ImageField(upload_to = 'images/')
@@ -52,3 +47,12 @@ class Image(models.Model):
 
     # def __str__(self):
     #     return self.post_caption()
+
+class Comment(models.Model):
+    user = models.ForeignKey(User, null=True, blank=True, on_delete=models.CASCADE,related_name='user')
+    comment = models.CharField(max_length =80,null=True)
+    date_posted = models.DateTimeField(auto_now=True)
+    image = models.ForeignKey(Image,related_name='comments',null=True)
+
+    def __str__(self):
+        return self.comment

@@ -1,11 +1,11 @@
 {% extends 'base.html'%}
+{% load bootstrap4 %}
 {% load staticfiles %}
 {% block content %}
+{{form.media}}
 
 <body>
     <p>hi guys, welcome</p>
-    <button><a href="{% url 'profile' %}">profile</a></button>
-    <!-- <button><a href="/logout">logout</a></button> -->
     <button><a href="{% url 'upload_image' %}">upload image</a></button>
     
     <button></button>
@@ -13,6 +13,7 @@
 <div class="container">
 
     <div class="row">
+    <div class="col-md-10">
     {% if images %}
         {% for image in images %}
 
@@ -22,13 +23,29 @@
             <span>Posted {{image.date_uploaded|timesince}} ago </span>
             <img src="{{image.image_image.url}}" alt="Image" style="height:300px; width:300px">
 
+            {% for comment in image.comments.all %}
+            <div class="row">
+                <div class="col-md-8">
+                    <p><strong>{{ comment.user.username }}</strong>:{{comment.comment}} </p>
+                    <em>Posted {{image.time_created|timesince}} ago </em>
+                    
+                </div>
+            </div>
+            {% endfor %}
+            <form id='comment' action="/new_comment/{{image.id}}" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                {% bootstrap_form co_form %}
+                <input type="submit" class="btn btn-primary" value="comment">
+            </form>
             
-            <br><br><br>
+            
+            <br><br>
         </div>
         {% endfor %}
     {% else %}
         <p>There are no images here</p>
     {% endif %}
+    </div>
     </div>
 </div>
 {% endblock %}

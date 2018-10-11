@@ -2,7 +2,7 @@ from django.http import HttpResponse,Http404
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
-from .forms import SignupForm,ProfileForm, ImageForm
+from .forms import SignupForm,ProfileForm, ImageForm, CommentForm
 from django.contrib.sites.shortcuts import get_current_site
 from django.utils.encoding import force_bytes, force_text
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
@@ -54,10 +54,11 @@ def activate(request, uidb64, token):
     else:
         return HttpResponse('Activation link is invalid!')
 
-# @login_required(login_url="/accounts/login/")
+@login_required(login_url="/accounts/login/")
 def hello(request):
     images = Image.objects.all()
-    return render(request,'instagram/index.html',{"images":images})
+    co_form = CommentForm()
+    return render(request,'instagram/index.html',{"images":images,"co_form": co_form})
 
 # @login_required
 # def view_profile(request,pk):
@@ -66,6 +67,7 @@ def hello(request):
 #     images=Image.objects.filter(id=pk)
 #     return render(request, 'instagram/profile.html', {'profile':profile,'images': images})
 
+@login_required
 def edit_profile(request):
     images = Image.objects.all()
     profile = Profile.objects.filter(user=request.user)
@@ -102,7 +104,7 @@ def view_profile(request):
 #             # return render(request, 'instagram/edit-profile.html', {"prof_form": prof_form,"profile":profile})
 #     return render(request, 'instagram/edit-profile.html', {"prof_form": prof_form,"profile":profile})
 
-# @login_required(login_url="/accounts/login/")
+@login_required(login_url="/accounts/login/")
 def upload_image(request):
     current_user = request.user
     if request.method == 'POST':
@@ -117,14 +119,15 @@ def upload_image(request):
         image_form = ImageForm()
     return render(request, 'instagram/upload-image.html', {"image_form": image_form})
 
+@login_required
 def new_comment(request,id):
-    upload = Image.objects.get(id=id)
+    upload_comment = Image.objects.get(id=id)
     if request.method == 'POST':
-        comment_form = CommentForm(request.POST)
-        if comment_form.is_valid():
-            comment = comment_form.save(commit=False)
+        co_form = CommentForm(request.POST)
+        if co_form.is_valid():
+            comment = co_form.save(commit=False)
             comment.user = request.user
-            comment.image= upload
+            comment.image= upload_comment
             comment.save()
         return redirect('/')
 

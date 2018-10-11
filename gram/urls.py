@@ -14,7 +14,8 @@ urlpatterns=[
     url(r'^edit_profile/', views.edit_profile, name = 'edit_profile'),
     # url(r'^other_profile/(?P<pk>\d+)',views.other_profile,name='other_profile'),
     url(r'^upload_image/', views.upload_image, name = 'upload_image'),
-    url(r'^search/', views.search_user, name='search_user'),
+    url(r'^search_user/', views.search_user, name='search_user'),
+    url(r'^new_comment/(\d+)', views.new_comment, name='new_comment'),
     # url(r'^upload/',views.upload,name='upload'),
 ]
 if settings.DEBUG:

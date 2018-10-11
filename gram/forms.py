@@ -20,6 +20,7 @@ class ImageForm(forms.ModelForm):
 		exclude = ['user','time_created','time_updated','date_uploaded','profile','image_name',]
 
 class CommentForm(forms.ModelForm):
-	class Meta:
-		model = Comment
-		fields = ('comment',)
+    class Meta:
+        model = Comment
+        exclude = ['user', 'image_name']
+        fields = ['comment']

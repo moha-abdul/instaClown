@@ -61,15 +61,8 @@
           <a class="fa fa-compass" href="#"></a>
           <a class="far fa-heart" href="#"></a>
           <a class="far fa-user" href="{% url 'profile' %}"></a>
+          <a class="fa fa-user" href="/logout">Logout</a>
         </section>
-        {% if user.is_authenticated %}
-        <a class="fa fa-user" href="/profile"></a>
-        <a class="fa fa-user" href="/logout">Logout</a>
-        {% else %}
-        <li>
-          <a class='btn btn-default' href="/accounts/login">Login</a>
-        </li>
-        {% endif %}
       </nav>
 
     </div>
