@@ -151,3 +151,8 @@ def search_user(request):
     else:
         message = "You haven't searched for any user"
         return render(request, 'instagram/search.html',{"message":message,"users": searched_users})
+
+@login_required
+def single_image(request,project_id):
+    image = Image.objects.get(id=project_id)
+    return render(request,'instagram/single-image.html',{"image":image})

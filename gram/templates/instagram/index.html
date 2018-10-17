@@ -16,13 +16,14 @@
     <div class="col-md-10">
     {% if images %}
         {% for image in images %}
-
+        
         <div class="thumbnail">     
             
             <a href="/profile"> {{ user.username}}</a>
             <span>Posted {{image.date_uploaded|timesince}} ago </span>
+            <a href="/single_image/{{image.id}}">
             <img src="{{image.image_image.url}}" alt="Image" style="height:300px; width:300px">
-
+            </a>
             {% for comment in image.comments.all %}
             <div class="row">
                 <div class="col-md-8">
@@ -37,10 +38,8 @@
                 {% bootstrap_form co_form %}
                 <input type="submit" class="btn btn-primary" value="comment">
             </form>
-            
-            
-            <br><br>
         </div>
+       
         {% endfor %}
     {% else %}
         <p>There are no images here</p>
