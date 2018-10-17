@@ -8,6 +8,14 @@
             <img src="{{image.image_image.url}}" style="height:400px; width: 400px;">
             <p>{{image.image_caption}}</p>
         </div>
+        {% for comment in image.comments.all %}
+            <div class="row">
+                <div class="col-md-8">
+                    <p><strong>{{ comment.user.username }}</strong></p>
+                    <p>{{comment.comment}}</p>
+                </div>
+            </div>
+            {% endfor %}
     </div>
 </div>
 {% endblock %}

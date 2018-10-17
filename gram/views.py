@@ -155,4 +155,5 @@ def search_user(request):
 @login_required
 def single_image(request,project_id):
     image = Image.objects.get(id=project_id)
+    # comments = 
     return render(request,'instagram/single-image.html',{"image":image})

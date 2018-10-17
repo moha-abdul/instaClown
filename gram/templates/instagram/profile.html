@@ -413,8 +413,9 @@ Remove or comment-out the code block below to see how the browser will fall-back
 						{% if images %}
 						{% for image in images %}
 						<div class="col-md-4">
-							{{image.image_caption}}
+							
 							<img src="{{image.image_image.url}}" alt="profile picture" style="height:300px; width:300px;">
+							<p style="font-size:16px; color:antiquewhite;">{{image.image_caption}}</p>
 						</div>
 						{% endfor %}
 						{% else %}

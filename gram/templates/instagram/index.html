@@ -5,9 +5,6 @@
 {{form.media}}
 
 <body>
-    <p>hi guys, welcome</p>
-    <button><a href="{% url 'upload_image' %}">upload image</a></button>
-    
     <button></button>
     
 <div class="container">
@@ -19,7 +16,7 @@
         
         <div class="thumbnail">     
             
-            <a href="/profile"> {{ user.username}}</a>
+            <a href="/profile"> <h3 style="font-size:16px; color:antiquewhite;">{{ user.username}}</h3></a>
             <span>Posted {{image.date_uploaded|timesince}} ago </span>
             <a href="/single_image/{{image.id}}">
             <img src="{{image.image_image.url}}" alt="Image" style="height:300px; width:300px">
@@ -27,8 +24,8 @@
             {% for comment in image.comments.all %}
             <div class="row">
                 <div class="col-md-8">
-                    <p><strong>{{ comment.user.username }}</strong></p>
-                    <p>{{comment.comment}}</p>
+                    <p style="font-size:18 px; color:antiquewhite;"><strong>{{ comment.user.username }}</strong></p>
+                    <p style="font-size:16px; color:snow">{{comment.comment}}</p>
                     
                 </div>
             </div>
