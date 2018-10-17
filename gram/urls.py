@@ -12,11 +12,11 @@ urlpatterns=[
         views.activate, name='activate'),
     url(r'^view_profile/',views.view_profile,name='profile'),
     url(r'^edit_profile/', views.edit_profile, name = 'edit_profile'),
+    url(r'^other_profiles/(\d+)',views.other_profiles,name='other_profiles'),
     # url(r'^other_profile/(?P<pk>\d+)',views.other_profile,name='other_profile'),
     url(r'^upload_image/', views.upload_image, name = 'upload_image'),
     url(r'^search_user/', views.search_user, name='search_user'),
     url(r'^new_comment/(\d+)', views.new_comment, name='new_comment'),
-    # url(r'^upload/',views.upload,name='upload'),
 ]
 if settings.DEBUG:
     urlpatterns+= static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)

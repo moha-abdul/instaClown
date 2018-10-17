@@ -26,8 +26,8 @@
             {% for comment in image.comments.all %}
             <div class="row">
                 <div class="col-md-8">
-                    <p><strong>{{ comment.user.username }}</strong>:{{comment.comment}} </p>
-                    <em>Posted {{image.time_created|timesince}} ago </em>
+                    <p><strong>{{ comment.user.username }}</strong></p>
+                    <p>{{comment.comment}}</p>
                     
                 </div>
             </div>

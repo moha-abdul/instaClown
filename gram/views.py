@@ -132,22 +132,22 @@ def new_comment(request,id):
         return redirect('/')
 
 @login_required
-def other_profile(request,pk):
-    current_user = request.user
-    profile=User.objects.get(id=pk)
-    images=Image.objects.filter(id=pk)
-    return render(request, 'instagram/profile.html', {'profile':profile,'images': images})
+def other_profiles(request,id):
+    other_profile = Profile.objects.get(user_id=id)
+    user_images=Image.objects.filter(user_id=id)
+                       
+    return render(request,'instagram/other-profile.html',{"other_profile":other_profile,"user_images":user_images})
 
 @login_required
 def search_user(request):
 
     if 'user' in request.GET and request.GET["user"]:
         search_term = request.GET.get("user")
-        searched_users = User.search_by_user(search_term)
+        searched_users = User.objects.filter(username=search_term)
         message = f"{search_term}"
 
         return render(request, 'instagram/search.html',{"message":message,"users": searched_users})
 
     else:
         message = "You haven't searched for any user"
-        return render(request, 'instagram/search.html',{"message":message})
+        return render(request, 'instagram/search.html',{"message":message,"users": searched_users})
