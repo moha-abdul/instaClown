@@ -131,12 +131,12 @@ def new_comment(request,id):
             comment.save()
         return redirect('/')
 
-@login_required
-def other_profiles(request,id):
-    other_profile = Profile.objects.get(user_id=id)
-    user_images=Image.objects.filter(user_id=id)
+# @login_required
+# def other_profiles(request,id):
+#     other_profile = Profile.objects.get(user_id=id)
+#     user_images=Image.objects.filter(user_id=id)
                        
-    return render(request,'instagram/other-profile.html',{"other_profile":other_profile,"user_images":user_images})
+#     return render(request,'instagram/other-profile.html',{"other_profile":other_profile,"user_images":user_images})
 
 @login_required
 def search_user(request):
