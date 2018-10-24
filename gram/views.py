@@ -37,7 +37,7 @@ def signup(request):
             return HttpResponse('Please confirm your email to complete the registration')
     else:
         form = SignupForm()
-    return render(request, 'registration/signup.html', {'form': form})
+    return render(request, 'registration/registration_form.html', {'form': form})
 
 # def activate(request, uidb64, token):
 #     try:
