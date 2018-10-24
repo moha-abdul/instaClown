@@ -22,37 +22,37 @@ def signup(request):
             profile=Profile(user=user)
             profile.save()             
             current_site = get_current_site(request)
-            mail_subject = 'Activate your instaClown account.'
-            message = render_to_string('registration/acc_active_email.html', {
-                'user': user,
-                'domain': current_site.domain,
-                'uid':urlsafe_base64_encode(force_bytes(user.pk)),
-                'token':account_activation_token.make_token(user),
-            })
-            to_email = form.cleaned_data.get('email')
-            email = EmailMessage(
-                        mail_subject, message, to=[to_email]
-            )
-            email.send()
+            # mail_subject = 'Activate your instaClown account.'
+            # message = render_to_string('registration/acc_active_email.html', {
+            #     'user': user,
+            #     'domain': current_site.domain,
+            #     'uid':urlsafe_base64_encode(force_bytes(user.pk)),
+            #     'token':account_activation_token.make_token(user),
+            # })
+            # to_email = form.cleaned_data.get('email')
+            # email = EmailMessage(
+            #             mail_subject, message, to=[to_email]
+            # )
+            # email.send()
             return HttpResponse('Please confirm your email to complete the registration')
     else:
         form = SignupForm()
     return render(request, 'registration/signup.html', {'form': form})
 
-def activate(request, uidb64, token):
-    try:
-        uid = force_text(urlsafe_base64_decode(uidb64))
-        user = User.objects.get(pk=uid)
-    except(TypeError, ValueError, OverflowError, User.DoesNotExist):
-        user = None
-    if user is not None and account_activation_token.check_token(user, token):
-        user.is_active = True
-        user.save()
-        login(request, user)
-        # return redirect('home')
-        return HttpResponse('Thank you. Now you can login your account.' '<a href="/accounts/login">Click here</a>')
-    else:
-        return HttpResponse('Activation link is invalid!')
+# def activate(request, uidb64, token):
+#     try:
+#         uid = force_text(urlsafe_base64_decode(uidb64))
+#         user = User.objects.get(pk=uid)
+#     except(TypeError, ValueError, OverflowError, User.DoesNotExist):
+#         user = None
+#     if user is not None and account_activation_token.check_token(user, token):
+#         user.is_active = True
+#         user.save()
+#         login(request, user)
+#         # return redirect('home')
+#         return HttpResponse('Thank you. Now you can login your account.' '<a href="/accounts/login">Click here</a>')
+#     else:
+#         return HttpResponse('Activation link is invalid!')
 
 @login_required(login_url="/accounts/login/")
 def hello(request):
@@ -88,7 +88,7 @@ def view_profile(request):
     current_user = request.user
     profile=Profile.objects.filter(user=request.user)
     images=Image.objects.filter(user=request.user)
-    return render (request,'instagram/profile.html',{'images':images,'profile':profile,})
+    return render(request,'instagram/profile.html',{'images':images,'profile':profile,})
 
 # @login_required
 # def edit_profile(request):
@@ -155,5 +155,4 @@ def search_user(request):
 @login_required
 def single_image(request,project_id):
     image = Image.objects.get(id=project_id)
-    # comments = 
     return render(request,'instagram/single-image.html',{"image":image})

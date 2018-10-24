@@ -17,7 +17,6 @@ class Profile(models.Model):
     def delete_image(self):
         self.delete()
         
-    
 
 class Image(models.Model):
     user = models.ForeignKey(User, null=True)
